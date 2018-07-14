@@ -31,7 +31,7 @@ proc reg data=Proj;
 	model Poverty=pred1 pieceslope;
 	output out=pieceout p=povhat;
 
-	test pred1, pieceslope;
+	test pred1=pieceslope;
 
 *Set up and plot piecewise;
 proc sort data=pieceout; by pred1;
@@ -44,12 +44,12 @@ proc gplot data=pieceout;
 *Question 2;
 proc reg data=Proj;
 	model
-	Poverty = Pop IPC Unemployment PD;
+	Poverty = Pop IPC Unemployment PD / ss1;
 
 	model 
-	Poverty = Pop IPC Unemployment PD SUM;
+	Poverty = Pop IPC Unemployment PD SUM/ ss1;
 
-	Nosum: test SUM=0
+	Nosum: test SUM=0;
 
 run;
 
