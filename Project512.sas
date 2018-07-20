@@ -1,5 +1,8 @@
 
 *Input;
+**just in case you are having trouble finding the data, there was a link posted in piazza that takes you to all the data sets in the book.; 
+**http://users.stat.ufl.edu/~rrandles/sta4210/Rclassnotes/data/textdatasets/KutnerData/Appendix%20C%20Data%20Sets/APPENC02.txt   ;
+**or you can look up the data set yourself: APPENC02;
 data Proj;
 	infile 'Placeholder';
 	input ID, County, State, Land, Pop, Young, Old, Doctors, Beds, Crime, HS, College, Poverty, Unemployment, IPC, Income, Region;
@@ -7,9 +10,11 @@ data Proj;
 	SUM = HS + College;
 
 	*Maybe disinclude? It's here more for my own amusement, and may cause more work. Discuss.; 
+	**I have no issue with this. If for some reason it becomes too much, we can always not inlclude later on;
 	PD = Pop/Land;
 
 	*Question 1 piecewise framework;
+	**for this question remember to fill in pred1 with the variable you want. and number with the number you want;
 	if pred1 le number
 		then pieceslope=0;
 	if pred1 gt number
