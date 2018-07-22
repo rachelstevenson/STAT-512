@@ -1,43 +1,46 @@
 
 *Input;
 data Proj;
-	infile 'Placeholder';
-	input ID, County, State, Land, Pop, Young, Old, Doctors, Beds, Crime, HS, College, Poverty, Unemployment, IPC, Income, Region;
+	infile '\\Client\D$\Downloads\S512\APPENC02.dat';
+	input ID County $ State $ Land Pop Young Old Doctors Beds Crime HS College Poverty Unemployment IPC Income Region;
 
 	SUM = HS + College;
 
 	*Maybe disinclude? It's here more for my own amusement, and may cause more work. Discuss.; 
 	PD = Pop/Land;
 
-	*Question 1 piecewise framework;
-	if pred1 le number
+	*Question 1 piecewise framework;	
+	if IPC le 20000
 		then pieceslope=0;
-	if pred1 gt number
-		then pieceslope=pred1 - number;
-
-
-
+	if IPC gt 20000
+		then pieceslope=IPC - 20000;
+	
 run;
 
 *Question 1;
 
 *Use to find non-linear, curved function;
 proc gplot data=Proj;
-	symbol1 v=circle i=sm70;
+	symbol1 v=circle;
 	plot Poverty*Pop Poverty*HS Poverty*College Poverty*IPC Poverty*Unemployment Poverty*PD;
+run;
+
+*After this I decided upon IPC, because it looked like the most optimal one for a piecewise function.
+I decided upon 20,000 as the break, because that is where the inflection point appeared to be.;
 
 *Get the piecewise slopes; 
 proc reg data=Proj;
-	model Poverty=pred1 pieceslope;
+	model Poverty=IPC pieceslope;
 	output out=pieceout p=povhat;
 
-	test pred1=pieceslope;
+	test IPC=pieceslope;
+run;
 
 *Set up and plot piecewise;
-proc sort data=pieceout; by pred1;
+proc sort data=pieceout; by IPC;
 proc gplot data=pieceout;
-	plot (Poverty povhat)*pred1 /overlay;
-
+	plot (Poverty povhat)*IPC /overlay;
+run;
 
 
 
