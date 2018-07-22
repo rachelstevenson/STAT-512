@@ -20,8 +20,9 @@ run;
 *Question 1;
 
 *Use to find non-linear, curved function;
+proc sort data=Proj;by IPC;
 proc gplot data=Proj;
-	symbol1 v=circle;
+	symbol1 v=circle i=sm70;
 	plot Poverty*Pop Poverty*HS Poverty*College Poverty*IPC Poverty*Unemployment Poverty*PD;
 run;
 
@@ -52,7 +53,7 @@ proc reg data=Proj;
 	model 
 	Poverty = Pop IPC Unemployment PD SUM/ ss1;
 
-	Nosum: test SUM=0;
+	Sum: test SUM=0;
 
 run;
 
@@ -68,28 +69,30 @@ run;
 proc reg data=Proj;
 
 	*Full set;
-	model Poverty= POP IPC PD Unemployment HS College SUM;
+	*Full: model Poverty= POP IPC PD Unemployment HS College SUM;
 
 	*First set of attempts: Is SUM better than HS College? Is there an individual which is best?;
-	model Poverty= Pop IPC PD Unemployment SUM;
+	JustSum: model Poverty= Pop IPC PD Unemployment SUM;
 
-	model Poverty= Pop IPC PD Unemployment HS;
+	JustHS:model Poverty= Pop IPC PD Unemployment HS;
 
-	model Poverty= Pop IPC PD Unemployment College;
+	JustCollege:model Poverty= Pop IPC PD Unemployment College;
 
-	model Poverty= Pop IPC PD Unemployment HS College;
+	NoSum:model Poverty= Pop IPC PD Unemployment HS College;
 
 	*Second set of attempts: Is Pop better than PD? Feel free to change these based upon the first set of models.;
-	model Poverty= Pop IPC Unemployment HS College SUM;
+	NoPD:model Poverty= Pop IPC Unemployment HS College;
 
-	model Poverty= PD IPC Unemployment HS College SUM;
+	NoPop:model Poverty= PD IPC Unemployment HS College;
+
+	NoPDPop:model Poverty= IPC Unemployment HS College;
 
 	*Third set of attempts: Does income matter? Does unemployment? Are the two of them tied super closely?;
-	model Poverty= Pop PD Unemployment HS College SUM;
+	NoI:model Poverty= Pop PD Unemployment HS College;
 
-	model Poverty= Pop PD IPC HS College SUM;
+	NoU:model Poverty= Pop PD IPC HS College;
 
-	model Poverty= Pop PD HS College SUM;
+	NoUI:model Poverty= Pop PD HS College;
 
 	*Fourth set of attempts: Come up with your own. Maybe unemployment is tied to college, high school and SUM stuff?;
 
