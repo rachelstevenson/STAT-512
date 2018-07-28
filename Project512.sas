@@ -34,7 +34,7 @@ proc reg data=Proj;
 	model Poverty=IPC pieceslope;
 	output out=pieceout p=povhat;
 
-	test IPC=pieceslope;
+	test pieceslope;
 run;
 
 *Set up and plot piecewise;
