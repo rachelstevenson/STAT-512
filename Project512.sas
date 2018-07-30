@@ -94,8 +94,6 @@ proc reg data=Proj;
 
 	NoUI:model Poverty= Pop PD HS College;
 
-	*Fourth set of attempts: Come up with your own. Maybe unemployment is tied to college, high school and SUM stuff?;
-
 run;
 
 quit;
